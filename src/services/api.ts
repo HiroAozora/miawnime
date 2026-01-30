@@ -88,6 +88,11 @@ export const api = {
     try {
       const res = await fetch(`${API_BASE_URL}/anime/${slug}`, {
         next: { revalidate: 3600 },
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+          Origin: "https://miawnime.vercel.app",
+        },
       });
 
       if (!res.ok) {
@@ -120,6 +125,17 @@ export const api = {
         episodeCount: info.episodes
           ? info.episodes.toString()
           : info.episodeList?.length.toString() || "?",
+        studios: Array.isArray(info.studios)
+          ? info.studios.map((s: any) => s.title).join(", ")
+          : info.studios || "-",
+        duration: info.duration,
+        type: info.type,
+        season: info.premiered || info.season,
+        producers: Array.isArray(info.producers)
+          ? info.producers.map((p: any) => p.title).join(", ")
+          : info.producers || "-",
+        releaseDate: info.aired,
+        genres: info.genreList?.map((g: any) => g.title) || [],
         episodes:
           info.episodeList?.map((ep: any) => ({
             title: ep.title,
@@ -222,15 +238,19 @@ export const api = {
       const data = json.data;
 
       return (
-        data?.map((day: any) => ({
-          day: day.day,
-          animeList:
-            day.animeList?.map((anime: any) => ({
-              title: anime.title,
-              slug: anime.animeId,
-              episode: anime.episodes?.toString() || "?",
-            })) || [],
-        })) || []
+        data?.map((day: any) => {
+          const rawList = day.anime_list || day.animeList || [];
+          return {
+            day: day.day,
+            animeList:
+              rawList.map((anime: any) => ({
+                title: anime.title,
+                slug: anime.slug, // Dump shows 'slug', not 'animeId'
+                episode: "?", // Dump doesn't have episode count, defaulted to ?
+                poster: anime.poster, // Dump has poster, let's keep it if we need it
+              })) || [],
+          };
+        }) || []
       );
     } catch (error) {
       console.error("API Error getSchedule:", error);

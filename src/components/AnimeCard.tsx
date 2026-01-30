@@ -34,11 +34,13 @@ export default function AnimeCard({
           {anime.title}
         </h3>
         <div className="flex items-center justify-between text-[10px] text-slate-300">
-          <span>
-            {isHistory
-              ? `Eps ${anime.episodeNumber}`
-              : `Eps ${anime.episodeCount || anime.status}`}
-          </span>
+          {(anime.episodeCount || anime.status) && (
+            <span>
+              {isHistory
+                ? `Eps ${anime.episodeNumber}`
+                : `Eps ${anime.episodeCount || anime.status}`}
+            </span>
+          )}
           {isHistory && <PlayCircle size={14} className="text-primary" />}
         </div>
       </div>

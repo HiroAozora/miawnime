@@ -50,7 +50,64 @@ export default async function AnimeDetail({
               <span className="bg-slate-800 px-2 py-1 rounded-md border border-slate-700">
                 {anime.episodeCount} Eps
               </span>
+              {anime.type && (
+                <span className="bg-slate-800 px-2 py-1 rounded-md border border-slate-700 uppercase">
+                  {anime.type}
+                </span>
+              )}
             </div>
+
+            <div className="space-y-1 text-xs text-slate-400 pt-3 border-t border-white/10 mt-3">
+              {anime.studios && anime.studios !== "-" && (
+                <div className="flex">
+                  <span className="text-slate-500 w-16 shrink-0">Studio:</span>
+                  <span className="text-slate-200 line-clamp-1">
+                    {anime.studios}
+                  </span>
+                </div>
+              )}
+              {anime.releaseDate && (
+                <div className="flex">
+                  <span className="text-slate-500 w-16 shrink-0">Rilis:</span>
+                  <span className="text-slate-200">{anime.releaseDate}</span>
+                </div>
+              )}
+              {anime.duration && (
+                <div className="flex">
+                  <span className="text-slate-500 w-16 shrink-0">Durasi:</span>
+                  <span className="text-slate-200">{anime.duration}</span>
+                </div>
+              )}
+              {anime.season && (
+                <div className="flex">
+                  <span className="text-slate-500 w-16 shrink-0">Season:</span>
+                  <span className="text-slate-200">{anime.season}</span>
+                </div>
+              )}
+              {anime.producers && anime.producers !== "-" && (
+                <div className="flex">
+                  <span className="text-slate-500 w-16 shrink-0">
+                    Produser:
+                  </span>
+                  <span className="text-slate-200 line-clamp-1">
+                    {anime.producers}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {anime.genres && anime.genres.length > 0 && (
+              <div className="flex flex-wrap gap-1 pt-3">
+                {anime.genres.map((genre) => (
+                  <span
+                    key={genre}
+                    className="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20"
+                  >
+                    {genre}
+                  </span>
+                ))}
+              </div>
+            )}
 
             <div className="pt-2">
               <FavoriteButton anime={anime} />

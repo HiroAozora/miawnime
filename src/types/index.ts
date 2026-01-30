@@ -9,6 +9,11 @@ export interface Anime {
   synopsis?: string;
   genres?: string[];
   releaseDate?: string;
+  studios?: string;
+  duration?: string;
+  type?: string;
+  season?: string;
+  producers?: string;
 }
 
 export interface Episode {
@@ -51,6 +56,7 @@ export interface ScheduleAnime {
   title: string;
   slug: string;
   episode: string;
+  poster: string;
 }
 
 export interface ScheduleDay {
@@ -58,4 +64,5 @@ export interface ScheduleDay {
   animeList: ScheduleAnime[];
 }
 
-export const API_BASE_URL = "https://www.sankavollerei.com/anime";
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://www.sankavollerei.com/anime";
