@@ -2,6 +2,7 @@
 
 import { useAnimeStorage } from "@/hooks/useAnimeStorage";
 import Link from "next/link";
+import Image from "next/image";
 import { Play } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -24,13 +25,15 @@ export default function LastWatchedBanner() {
 
   return (
     <div className="mb-6 px-4 sm:px-0">
-      <div className="relative w-full aspect-[21/9] sm:aspect-[3/1] rounded-2xl overflow-hidden shadow-2xl group">
-        {/* Background Image with Overlay */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${lastWatched.poster})` }}
+      <div className="relative aspect-21/9 sm:aspect-3/1 w-full overflow-hidden">
+        <Image
+          src={lastWatched.poster}
+          alt={lastWatched.title}
+          fill
+          className="object-cover opacity-60 group-hover:opacity-70 transition-opacity duration-500"
+          sizes="(max-width: 768px) 100vw, 100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/60 to-transparent" />
         <div className="absolute inset-0 bg-black/40" />
 
         {/* Content */}

@@ -10,6 +10,11 @@ export const metadata: Metadata = {
   title: "MiawNime",
   description: "Aplikasi streaming anime gratis tanpa iklan yang mengganggu.",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/miawnime.svg",
+    shortcut: "/miawnime.svg",
+    apple: "/miawnime.svg",
+  },
 };
 
 export const viewport: Viewport = {
