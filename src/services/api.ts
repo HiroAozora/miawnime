@@ -223,6 +223,40 @@ export const api = {
     }
   },
 
+  getBatchDownload: async (
+    slug: string,
+  ): Promise<{ title: string; qualities: { name: string; links: { server: string; url: string }[] }[] } | null> => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/batch/${slug}`, {
+        next: { revalidate: 3600 },
+      });
+
+      if (!res.ok) {
+        console.warn(`API Error ${res.status} for batch download`);
+        return null;
+      }
+
+      const json = await res.json();
+      const data = json.data;
+
+      if (!data) return null;
+
+      const qualities: { name: string; links: { server: string; url: string }[] }[] =
+        (data.downloadUrl || data.batchLink || []).map((q: any) => ({
+          name: q.title || q.name || q.quality,
+          links: (q.links || q.serverList || []).map((l: any) => ({
+            server: l.title || l.server,
+            url: l.url || l.href,
+          })),
+        }));
+
+      return { title: data.title || "", qualities };
+    } catch (error) {
+      console.error("API Error getBatchDownload:", error);
+      return null;
+    }
+  },
+
   getSchedule: async (): Promise<import("../types").ScheduleDay[]> => {
     try {
       const res = await fetch(`${API_BASE_URL}/schedule`, {

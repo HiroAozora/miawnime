@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { api } from "@/services/api";
-import { Star, Calendar, Mic2 } from "lucide-react";
-import FavoriteButton from "./FavoriteButton"; // We need to create this client component
+import { Star } from "lucide-react";
+import FavoriteButton from "./FavoriteButton";
+import DownloadButton from "./DownloadButton";
 
 export default async function AnimeDetail({
   params,
@@ -109,8 +110,9 @@ export default async function AnimeDetail({
               </div>
             )}
 
-            <div className="pt-2">
+            <div className="pt-2 flex flex-col gap-2">
               <FavoriteButton anime={anime} />
+              <DownloadButton slug={anime.slug} />
             </div>
           </div>
         </div>

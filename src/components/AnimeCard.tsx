@@ -43,6 +43,16 @@ export default function AnimeCard({
           )}
           {isHistory && <PlayCircle size={14} className="text-primary" />}
         </div>
+
+        {/* Progress bar — shown for history items */}
+        {isHistory && (
+          <div className="mt-1.5 h-1 w-full bg-slate-700/70 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-emerald-500 rounded-full"
+              style={{ width: "100%" }}
+            />
+          </div>
+        )}
       </div>
     </Link>
   );

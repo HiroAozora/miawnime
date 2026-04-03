@@ -1,17 +1,18 @@
-import { api } from "@/services/api";
 import AnimeCard from "@/components/AnimeCard";
 import Link from "next/link";
 import LastWatchedBanner from "@/components/LastWatchedBanner";
+import { SkeletonRow } from "@/components/SkeletonCard";
+import { Suspense } from "react";
+import { api } from "@/services/api";
 import { Anime } from "@/types";
 
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 3600;
 
-export default async function Home() {
+async function HomeContent() {
   const { ongoing, completed } = await api.getHome();
 
   return (
-    <div className="space-y-8">
-      <LastWatchedBanner />
+    <>
       {/* Ongoing Section */}
       <section>
         <div className="flex items-center justify-between mb-4 px-4 sm:px-0">
@@ -63,6 +64,37 @@ export default async function Home() {
           </div>
         )}
       </section>
+    </>
+  );
+}
+
+function SectionSkeleton({ title }: { title: string }) {
+  return (
+    <section>
+      <div className="flex items-center justify-between mb-4 px-4 sm:px-0">
+        <h2 className="text-xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+          {title}
+        </h2>
+      </div>
+      <SkeletonRow count={6} />
+    </section>
+  );
+}
+
+export default function Home() {
+  return (
+    <div className="space-y-8">
+      <LastWatchedBanner />
+      <Suspense
+        fallback={
+          <>
+            <SectionSkeleton title="Sedang Tayang" />
+            <SectionSkeleton title="Anime Terbaru" />
+          </>
+        }
+      >
+        <HomeContent />
+      </Suspense>
     </div>
   );
 }
